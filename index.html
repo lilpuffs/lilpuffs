@@ -156,7 +156,12 @@ iframe {
     <img src="https://cdn-icons-png.flaticon.com/512/808/808439.png" alt="game controller icon">
     <span>Floaty Puff</span>  
   </div>
-
+  <a href="https://twitter.com/lilpuffs_" target="_blank" style="text-decoration: none;">
+  <div class="desktop-icon" data-window="puff-twitter">
+    <img src="https://cdn-icons-png.flaticon.com/512/220/220618.png" alt="twitter icon">
+    <span>Puffs Twitter</span>  
+  </div>
+</a>
   <div class="window" data-window="about-puffos" style="display: none; width: 400px">
     <div class="title-bar">
       <div class="title-bar-text">About PuffOS</div>
@@ -177,7 +182,7 @@ iframe {
       </ul>
       <p>We hope you enjoy using PuffOS as much as a pufferfish enjoys exploring the ocean!</p>
 
-      <img src="https://pngimg.com/uploads/fish/fish_PNG25167.png" alt="pixelated pufferfish" width="128" height="128">
+      <img src="https://files.catbox.moe/bknmal.gif" alt="pixelated pufferfish" width="128" height="128">
 
     </div>
   </div>
@@ -221,6 +226,7 @@ iframe {
 
   <button data-window="about-puffos">About PuffOS</button>
   <button data-window="puff-explorer">PuffExplorer</button>
+  <button id="puff-twitter">Puffs Twitter</button>  
   <button data-window="puff-game">Floaty Puff</button>  
 
   <button id="music-button">
@@ -235,11 +241,14 @@ iframe {
   <button data-window="about-puffos">About PuffOS</button>  
   <button data-window="puff-explorer">PuffExplorer</button>
   <button data-window="puff-game">Floaty Puff</button>
+  <button id="puff-twitter">Puffs Twitter</button>  
   <button id="shutdown-button">Shut Down</button>
 </div>
 
 <img id="cursor-fish" src="https://files.catbox.moe/5zc3pj.png" alt="pufferfish cursor" width="64" height="64">
-
+<script>document.getElementById('puff-twitter').addEventListener('click', function() {
+  window.location.href = 'https://twitter.com/lilpuffs_', '_blank';
+});</script>
 </body>
 <script>
 // Make windows draggable 
