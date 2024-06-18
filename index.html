@@ -1,466 +1,653 @@
-<html><head><link rel="stylesheet" href="https://unpkg.com/98.css">
+<html>
+<head>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/98.css">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <title>PuffOS</title>
-<style>
-body {
-  background-image: url('https://files.catbox.moe/b7w6rs.gif');
-  background-repeat: repeat;
-  overflow: hidden;
-  font-family: 'Pixelated MS Sans Serif',Arial;
-  -webkit-font-smoothing: none;
-  font-size: 11px;
-}
+  <style>
+    body {
+      background-image: url('https://files.catbox.moe/b7w6rs.gif');
+      background-repeat: repeat;
+      overflow: hidden;
+      font-family: 'Pixelated MS Sans Serif', Arial;
+      -webkit-font-smoothing: none;
+      font-size: 11px;
+    }
 
-.title-bar, button {
-  background: linear-gradient(90deg, #ffcc00 0%, #ffdb4d 100%);
-}
+    .title-bar,
+    button {
+      background: linear-gradient(90deg, #ffcc00 0%, #ffdb4d 100%);
+    }
 
-.window {
-  min-width: 300px;
-  min-height: 200px;
-  max-width: 800px;
-  position: absolute;
-  z-index: 2;
-}
+    .window {
+      min-width: 300px;
+      min-height: 200px;
+      max-width: 800px;
+      position: absolute;
+      z-index: 2;
+    }
 
-#desktop {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 40px;
-}
+    #desktop {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 40px;
+    }
 
-#taskbar {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 40px;
-  background: linear-gradient(180deg, #ffcc00 0%, #ffdb4d 100%);
-  display: flex;
-  align-items: center;
-  padding: 0 10px;
-  z-index: 10;
-}
+    #taskbar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 40px;
+      background: linear-gradient(180deg, #ffcc00 0%, #ffdb4d 100%);
+      display: flex;
+      align-items: center;
+      padding: 0 10px;
+      z-index: 10;
+    }
 
-#taskbar button {
-  margin-right: 5px;
-  padding: 0 10px;
-  height: 30px;
-  min-width: 100px;
-  font-size: 14px;
-}
+    #taskbar button {
+      margin-right: 5px;
+      padding: 0 10px;
+      height: 30px;
+      min-width: 100px;
+      font-size: 14px;
+    }
 
-#startup {
-  position: absolute;
-  bottom: 40px;
-  left: 0;
-  background: #c0c0c0;
-  width: 200px;
-  display: none;
-  flex-direction: column;
-  border: 2px solid black;
-  z-index: 5;
-  padding: 5px;
-}
+    #startup {
+      position: absolute;
+      bottom: 40px;
+      left: 0;
+      background: #c0c0c0;
+      width: 200px;
+      display: none;
+      flex-direction: column;
+      border: 2px solid black;
+      z-index: 5;
+      padding: 5px;
+    }
 
-#start-button {
-  font-weight: bold;
-}
+    #start-button {
+      font-weight: bold;
+    }
 
-#startup button {  
-  margin-bottom: 5px;
-  height: 30px;
-  background: #c0c0c0;
-}
+    #startup button {
+      margin-bottom: 5px;
+      height: 30px;
+      background: #c0c0c0;
+    }
 
-.start-menu-open #startup {
-  display: flex;
-}
+    .start-menu-open #startup {
+      display: flex;
+    }
 
-.window.active {
-  z-index: 3;
-}
+    .window.active {
+      z-index: 3;
+    }
 
-.window.minimized {
-  display: none;
-}
+    .window.minimized {
+      display: none;
+    }
 
-.desktop-icon {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 80px;
-  margin: 10px;
-  cursor: pointer;
-  text-align: center;
-}
+    .desktop-icon {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 80px;
+      margin: 10px;
+      cursor: pointer;
+      text-align: center;
+    }
 
-.desktop-icon img {
-  width: 48px;
-  height: 48px;  
-}
+    .desktop-icon img {
+      width: 48px;
+      height: 48px;
+    }
 
-.desktop-icon span {
-  margin-top: 5px;
-  color: navy;
-  text-shadow: 1px 1px white;
-  font-family: 'Pixelated MS Sans Serif',Arial;
-}
+    .desktop-icon span {
+      margin-top: 5px;
+      color: navy;
+      text-shadow: 1px 1px white;
+      font-family: 'Pixelated MS Sans Serif', Arial;
+    }
 
-#cursor-fish {
-  position: absolute;
-  z-index: 1;
-  pointer-events: none;
-}
+    #cursor-fish {
+      position: absolute;
+      z-index: 1;
+      pointer-events: none;
+    }
 
-iframe {
-  width: 100%;
-  height: calc(100% - 22px);
-  border: none;
-}
+    iframe {
+      width: 100%;
+      height: calc(100% - 22px);
+      border: none;
+    }
 
-#music-button {
-  margin-left: auto;
-  display: flex;
-  align-items: center;
-}
+    #music-button {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+    }
 
-#music-button img {
-  width: 24px;
-  height: 24px;
-  margin-right: 5px;
-}
+    #music-button img {
+      width: 24px;
+      height: 24px;
+      margin-right: 5px;
+    }
 
-#clock {
-  margin-left: 10px;
-  font-size: 15px;
-  letter-spacing: -0.2px;
-}
-</style>
+    #clock {
+      margin-left: 10px;
+      font-size: 15px;
+      letter-spacing: -0.2px;
+    }
+  </style>
 </head>
+
 <body>
-<div id="desktop">
+  <div id="desktop">
 
-  <div class="desktop-icon" data-window="about-puffos">
-    <img src="https://cdn-icons-png.flaticon.com/512/4260/4260932.png" alt="information icon">
-    <span>About PuffOS</span>
-  </div>
+    <div class="desktop-icon" data-window="about-puffos">
+      <img src="https://cdn-icons-png.flaticon.com/512/4260/4260932.png" alt="information icon">
+      <span>About PuffOS</span>
+    </div>
 
-  <div class="desktop-icon" data-window="puff-explorer">
-    <img src="https://cdn-icons-png.flaticon.com/512/539/539302.png" alt="folder icon">  
-    <span>PuffExplorer</span>
-  </div>
+    <div class="desktop-icon" data-window="puff-explorer">
+      <img src="https://cdn-icons-png.flaticon.com/512/539/539302.png" alt="folder icon">
+      <span>PuffExplorer</span>
+    </div>
 
-  <div class="desktop-icon" data-window="puff-game">
-    <img src="https://cdn-icons-png.flaticon.com/512/302/302617.png" alt="game controller icon">
-    <span>Floaty Puff</span>  
-  </div>
+    <div class="desktop-icon" data-window="puff-game">
+      <img src="https://cdn-icons-png.flaticon.com/512/302/302617.png" alt="game controller icon">
+      <span>Floaty Puff</span>
+    </div>
 
     <div class="desktop-icon twitterButton" data-window="puff-twitter">
-    <img href="https://twitter.com/lilpuffs_" target="_blank" src="https://cdn-icons-png.flaticon.com/512/220/220618.png" alt="twitter icon">
-    <span>Puffs Twitter</span>  
-</div>
-  <div class="window" data-window="about-puffos" style="display: none; width: 400px">
-    <div class="title-bar">
-      <div class="title-bar-text">About PuffOS</div>
-      <div class="title-bar-controls">
-        <button aria-label="Minimize" class="minimize-button"></button>
-        <button aria-label="Maximize"></button>
-        <button aria-label="Close" class="close-button"></button>
+      <img href="https://twitter.com/lilpuffs_" target="_blank"
+        src="https://cdn-icons-png.flaticon.com/512/220/220618.png" alt="twitter icon">
+      <span>Puffs Twitter</span>
+    </div>
+
+    <div class="desktop-icon" data-window="charts">
+      <img src="https://cdn-icons-png.flaticon.com/512/230/230571.png" alt="charts">
+      <span>Bitcoin Charts</span>
+    </div>
+
+    <div class="window" data-window="about-puffos" style="display: none; width: 400px">
+      <div class="title-bar">
+        <div class="title-bar-text">About PuffOS</div>
+        <div class="title-bar-controls">
+          <button aria-label="Minimize" class="minimize-button"></button>
+          <button aria-label="Maximize"></button>
+          <button aria-label="Close" class="close-button"></button>
+        </div>
+      </div>
+      <div class="window-body has-space">
+        <p>Welcome to PuffOS, the pufferfish-inspired operating system! </p>
+        <p>PuffOS features:</p>
+        <ul>
+          <li>A whimsical blue and yellow color scheme</li>
+          <li>Desktop "swimming" with animated water background</li>
+          <li>Drag and drop windows just like the pufferfish moves through the sea</li>
+          <li>Classic 90s era pixelated UI style</li>
+        </ul>
+        <p>We hope you enjoy using PuffOS as much as a pufferfish enjoys exploring the ocean!</p>
+
+        <img src="https://files.catbox.moe/bknmal.gif" alt="pixelated pufferfish" width="128" height="128">
+
       </div>
     </div>
-    <div class="window-body has-space">
-      <p>Welcome to PuffOS, the pufferfish-inspired operating system! </p>
-      <p>PuffOS features:</p>
-      <ul>
-        <li>A whimsical blue and yellow color scheme</li>
-        <li>Desktop "swimming" with animated water background</li>
-        <li>Drag and drop windows just like the pufferfish moves through the sea</li>
-        <li>Classic 90s era pixelated UI style</li>
-      </ul>
-      <p>We hope you enjoy using PuffOS as much as a pufferfish enjoys exploring the ocean!</p>
 
-      <img src="https://files.catbox.moe/bknmal.gif" alt="pixelated pufferfish" width="128" height="128">
-
-    </div>
-  </div>
-
-  <div class="window" data-window="puff-explorer" style="display: none; width: 350px; left: 420px;">
-    <div class="title-bar">
-      <div class="title-bar-text">PuffExplorer</div>
-      <div class="title-bar-controls">
-        <button aria-label="Minimize" class="minimize-button"></button>
-        <button aria-label="Maximize"></button>
-        <button aria-label="Close" class="close-button"></button>
+    <div class="window" data-window="puff-explorer" style="display: none; width: 350px; left: 420px;">
+      <div class="title-bar">
+        <div class="title-bar-text">PuffExplorer</div>
+        <div class="title-bar-controls">
+          <button aria-label="Minimize" class="minimize-button"></button>
+          <button aria-label="Maximize"></button>
+          <button aria-label="Close" class="close-button"></button>
+        </div>
+      </div>
+      <div class="window-body">
+        <ul class="tree-view">
+          <li>📁 Puffer Documents</li>
+          <li>📁 Puffer Pictures</li>
+          <li>📁 Puffer Games</li>
+          <li>📁 Puffer Settings</li>
+          <li>🖥️ Puffer Drive (C:)</li>
+        </ul>
       </div>
     </div>
-    <div class="window-body">
-      <ul class="tree-view">
-        <li>📁 Puffer Documents</li>
-        <li>📁 Puffer Pictures</li>
-        <li>📁 Puffer Games</li>
-        <li>📁 Puffer Settings</li>
-        <li>🖥️ Puffer Drive (C:)</li>
-      </ul>
-    </div>
-  </div>
 
-  <div class="window" data-window="puff-game" style="display: none; width: 400px; height: 610px;"> 
-    <div class="title-bar">
-      <div class="title-bar-text">Floaty Puff</div>
-      <div class="title-bar-controls">
-        <button aria-label="Minimize" class="minimize-button"></button>
-        <button aria-label="Maximize"></button>
-        <button aria-label="Close" class="close-button"></button>
+    <div class="window" data-window="charts" style="display: none; width: 1000px; left: 800px;">
+      <div class="title-bar">
+        <div class="title-bar-text">PuffExplorer</div>
+        <div class="title-bar-controls">
+          <button aria-label="Minimize" class="minimize-button"></button>
+          <button aria-label="Maximize"></button>
+          <button aria-label="Close" class="close-button"></button>
+        </div>
+      </div>
+      <div class="window-body">
+        <canvas id="btcChart"></canvas>
+        <div>
+          <fieldset>
+            <legend>Select Time Period:</legend>
+            <div class="field-row">
+              <input id="day" type="radio" name="timePeriod" checked>
+              <label for="day">24 hours</label>
+            </div>
+            <div class="field-row">  
+              <input id="week" type="radio" name="timePeriod">
+              <label for="week">7 days</label>
+            </div>
+            <div class="field-row">
+              <input id="month" type="radio" name="timePeriod">
+              <label for="month">30 days</label>
+            </div>
+          </fieldset>  
+        </div>
       </div>
     </div>
-    <iframe src="https://lilpuffs.github.io/floatypuff/"></iframe>
+
+    <div class="window" data-window="puff-game" style="display: none; width: 400px; height: 610px;">
+      <div class="title-bar">
+        <div class="title-bar-text">Floaty Puff</div>
+        <div class="title-bar-controls">
+          <button aria-label="Minimize" class="minimize-button"></button>
+          <button aria-label="Maximize"></button>
+          <button aria-label="Close" class="close-button"></button>
+        </div>
+      </div>
+      <iframe src="https://lilpuffs.github.io/floatypuff/"></iframe>
+    </div>
+
+
   </div>
 
-</div>
+  <div id="taskbar">
+    <button id="start-button">Start</button>
 
-<div id="taskbar">
-  <button id="start-button">Start</button>
+    <button data-window="about-puffos">About PuffOS</button>
+    <button data-window="puff-explorer">PuffExplorer</button>
+    <button class="twitterButton">Puffs Twitter</button>
+    <button data-window="puff-game">Floaty Puff</button>
 
-  <button data-window="about-puffos">About PuffOS</button>
-  <button data-window="puff-explorer">PuffExplorer</button>
-  <button class="twitterButton">Puffs Twitter</button>  
-  <button data-window="puff-game">Floaty Puff</button>  
+    <button id="music-button">
+      <img src="https://cdn-icons-png.flaticon.com/128/1895/1895657.png" alt="music note icon">
+      <span>Music</span>
+    </button>
 
-  <button id="music-button">
-    <img src="https://cdn-icons-png.flaticon.com/128/1895/1895657.png" alt="music note icon">
-    <span>Music</span>
-  </button>
+    <span id="clock"></span>
+  </div>
 
-  <span id="clock"></span>
-</div>
+  <div id="startup">
+    <button data-window="about-puffos">About PuffOS</button>
+    <button data-window="puff-explorer">PuffExplorer</button>
+    <button data-window="puff-game">Floaty Puff</button>
+    <button class="twitterButton">Puffs Twitter</button>
+    <button id="shutdown-button">Shut Down</button>
+  </div>
 
-<div id="startup">
-  <button data-window="about-puffos">About PuffOS</button>  
-  <button data-window="puff-explorer">PuffExplorer</button>
-  <button data-window="puff-game">Floaty Puff</button>
-  <button class="twitterButton">Puffs Twitter</button>  
-  <button id="shutdown-button">Shut Down</button>
-</div>
+  <img id="cursor-fish" src="https://files.catbox.moe/5zc3pj.png" alt="pufferfish cursor" width="64" height="64">
 
-<img id="cursor-fish" src="https://files.catbox.moe/5zc3pj.png" alt="pufferfish cursor" width="64" height="64">
 
-  
-<script>
-const twitterButtons = document.querySelectorAll('.twitterButton');
+  <script>
+    const twitterButtons = document.querySelectorAll('.twitterButton');
 
-twitterButtons.forEach(button => {
-    button.addEventListener('click', function() {
+    twitterButtons.forEach(button => {
+      button.addEventListener('click', function () {
         window.open('https://twitter.com/lilpuffs_', '_blank');
+      });
     });
-});
-</script>
+  </script>
+
+
+<script>
+  const CRYPTOCOMPARE_API_KEY = 'YOUR_API_KEY';
+  const CRYPTOCOMPARE_API_URL = 'https://min-api.cryptocompare.com/data/v2';
   
+  async function getBTCPriceHistory(period) {
+    let endpoint = 'histohour';
+    let limit = 24;
+    
+    switch(period) {
+      case 'week':
+        endpoint = 'histoday';
+        limit = 7;
+        break;
+      case 'month':
+        endpoint = 'histoday';
+        limit = 30;
+        break; 
+    }
+    
+    const response = await fetch(`${CRYPTOCOMPARE_API_URL}/${endpoint}?fsym=BTC&tsym=USD&limit=${limit}&api_key=${CRYPTOCOMPARE_API_KEY}`);
+    const data = await response.json();
+    return data.Data.Data;  
+  }
+  
+  function renderChart(prices) {
+    const ctx = document.getElementById('btcChart').getContext('2d');
+  
+    const labels = prices.map(price => new Date(price.time * 1000).toLocaleString());
+    const data = prices.map(price => price.close);
+  
+    const chart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'BTC Price (USD)', 
+          data: data,
+          borderColor: '#000080',
+          backgroundColor: 'rgba(0, 0, 128, 0.1)',
+          pointStyle: 'rect',
+          pointBorderWidth: 1,
+          pointBorderColor: 'black',
+          pointBackgroundColor: 'white',
+          pointRotation: 45,
+          pointRadius: 6,
+          pointHoverRadius: 8,
+          tension: 0.4
+        }]
+      },
+      options: {  
+        plugins: {
+          legend: {
+            labels: {
+              color: 'black', 
+              font: {
+                family: '"Pixelated MS Sans Serif", Arial',
+                size: 12,
+              }
+            }
+          },
+          tooltip: {
+            mode: 'nearest',
+            intersect: false,
+            titleColor: 'black',
+            bodyColor: 'black',
+            titleFont: {
+              family: '"Pixelated MS Sans Serif", Arial',
+              size: 12  
+            },
+            bodyFont: {
+              family: '"Pixelated MS Sans Serif", Arial',
+              size: 12
+            },
+            padding: 8,
+            backgroundColor: 'rgba(255,255,255,0.8)',
+            borderColor: 'rgba(0,0,0,0.5)',
+            borderWidth: 1,
+          }
+        },
+        scales: {
+          x: {
+            ticks: {
+              color: '#222',
+              font: {
+                family: '"Pixelated MS Sans Serif", Arial',
+                size: 11,
+              }  
+            },
+            grid: {
+              color: '#dfdfdf',
+              borderColor: 'gray',
+              tickColor: 'gray'
+            }
+          },
+          y: {
+            ticks: {
+              color: '#222',
+              font: {
+                family: '"Pixelated MS Sans Serif", Arial',
+                size: 11,
+              }   
+            },
+            grid: {
+              color: '#dfdfdf',
+              borderColor: 'gray',
+              tickColor: 'gray'  
+            }
+          }
+        },
+        interaction: {
+          mode: 'nearest',
+          intersect: false
+        }
+      }
+    });
+    
+    return chart;
+  }
+  
+  let chartInstance = null;
+  
+  function loadChartData(period) {
+    getBTCPriceHistory(period).then(prices => {
+      if(chartInstance) {
+        chartInstance.destroy();
+      }
+      chartInstance = renderChart(prices);
+    });  
+  }
+  
+  const radioButtons = document.querySelectorAll('input[name="timePeriod"]');
+  radioButtons.forEach(radio => {
+    radio.addEventListener('change', () => {
+      loadChartData(radio.id);
+    });
+  });
+  
+  loadChartData('day');
+  </script>
+  </body></html>
 </body>
 <script>
-// Make windows draggable 
-(function() {
-  const windows = document.querySelectorAll('.window');
-  let activeWindow = null;
+  // Make windows draggable 
+  (function () {
+    const windows = document.querySelectorAll('.window');
+    let activeWindow = null;
 
-  for (let window of windows) {
-    const titleBar = window.querySelector('.title-bar');
-    let offsetX, offsetY;
+    for (let window of windows) {
+      const titleBar = window.querySelector('.title-bar');
+      let offsetX, offsetY;
 
-    titleBar.addEventListener('mousedown', startDragging);
-    titleBar.addEventListener('click', activateWindow);
+      titleBar.addEventListener('mousedown', startDragging);
+      titleBar.addEventListener('click', activateWindow);
 
-    function startDragging(event) {
-      offsetX = event.clientX - window.offsetLeft;
-      offsetY = event.clientY - window.offsetTop;
-      
-      document.addEventListener('mousemove', drag);
-      document.addEventListener('mouseup', stopDragging);
-    }
+      function startDragging(event) {
+        offsetX = event.clientX - window.offsetLeft;
+        offsetY = event.clientY - window.offsetTop;
 
-    function drag(event) {
-      const newLeft = event.clientX - offsetX;
-      const newTop = event.clientY - offsetY;
-
-      // Prevent window from going off-screen
-      const desktopWidth = document.querySelector('#desktop').clientWidth;
-      const desktopHeight = document.querySelector('#desktop').clientHeight;
-      const windowWidth = window.clientWidth;
-      const windowHeight = window.clientHeight;
-
-      window.style.left = Math.max(Math.min(newLeft, desktopWidth - windowWidth), 0) + 'px';
-      window.style.top = Math.max(Math.min(newTop, desktopHeight - windowHeight), 0) + 'px';
-    }
-
-    function stopDragging() {
-      document.removeEventListener('mousemove', drag);
-    }
-
-    function activateWindow() {
-      if (activeWindow) {
-        activeWindow.classList.remove('active');
+        document.addEventListener('mousemove', drag);
+        document.addEventListener('mouseup', stopDragging);
       }
-      window.classList.add('active');
-      activeWindow = window;
+
+      function drag(event) {
+        const newLeft = event.clientX - offsetX;
+        const newTop = event.clientY - offsetY;
+
+        // Prevent window from going off-screen
+        const desktopWidth = document.querySelector('#desktop').clientWidth;
+        const desktopHeight = document.querySelector('#desktop').clientHeight;
+        const windowWidth = window.clientWidth;
+        const windowHeight = window.clientHeight;
+
+        window.style.left = Math.max(Math.min(newLeft, desktopWidth - windowWidth), 0) + 'px';
+        window.style.top = Math.max(Math.min(newTop, desktopHeight - windowHeight), 0) + 'px';
+      }
+
+      function stopDragging() {
+        document.removeEventListener('mousemove', drag);
+      }
+
+      function activateWindow() {
+        if (activeWindow) {
+          activeWindow.classList.remove('active');
+        }
+        window.classList.add('active');
+        activeWindow = window;
+      }
     }
-  }
-})();
+  })();
 
-// Start menu functionality
-(function() {
-  const startButton = document.querySelector('#start-button');
-  const startMenu = document.querySelector('#startup');
-  const body = document.body;
+  // Start menu functionality
+  (function () {
+    const startButton = document.querySelector('#start-button');
+    const startMenu = document.querySelector('#startup');
+    const body = document.body;
 
-  startButton.addEventListener('click', toggleStartMenu);
-  startMenu.addEventListener('click', handleStartMenuClick);
+    startButton.addEventListener('click', toggleStartMenu);
+    startMenu.addEventListener('click', handleStartMenuClick);
 
-  document.addEventListener('click', (event) => {
-    if (!startMenu.contains(event.target) && event.target !== startButton) {
+    document.addEventListener('click', (event) => {
+      if (!startMenu.contains(event.target) && event.target !== startButton) {
+        body.classList.remove('start-menu-open');
+      }
+    });
+
+    function toggleStartMenu() {
+      body.classList.toggle('start-menu-open');
+    }
+
+    function handleStartMenuClick(event) {
+      if (event.target.dataset.window) {
+        const targetWindow = document.querySelector(`.window[data-window="${event.target.dataset.window}"]`);
+        openWindow(targetWindow);
+      } else if (event.target.id === 'shutdown-button') {
+        shutdownSystem();
+      }
       body.classList.remove('start-menu-open');
     }
-  });
 
-  function toggleStartMenu() {
-    body.classList.toggle('start-menu-open');  
-  }
-
-  function handleStartMenuClick(event) {
-    if (event.target.dataset.window) {
-      const targetWindow = document.querySelector(`.window[data-window="${event.target.dataset.window}"]`);
-      openWindow(targetWindow);
-    } else if (event.target.id === 'shutdown-button') {
-      shutdownSystem();  
-    }
-    body.classList.remove('start-menu-open');
-  }
-
-  function openWindow(targetWindow) {
-    targetWindow.style.display = 'block';
-    targetWindow.style.zIndex = 3;
-  }
-
-  function shutdownSystem() {
-    if (confirm("Are you sure you want to close PuffOS and end the session?")) {
-      window.close();
-    }
-  }
-})();
-
-// Taskbar functionality 
-(function() {
-  const taskbar = document.querySelector('#taskbar');
-
-  taskbar.addEventListener('click', (event) => {
-    if (event.target.dataset.window) {
-      const targetWindow = document.querySelector(`.window[data-window="${event.target.dataset.window}"]`);
-      
-      if (targetWindow.style.display === 'none') {
-        targetWindow.style.display = 'block';
-      }
-      targetWindow.style.zIndex = 3;
-    }
-  });
-})();
-
-// Window control buttons
-(function() {
-  document.querySelectorAll('.window').forEach(window => {
-    const minimizeButton = window.querySelector('.minimize-button');
-    const closeButton = window.querySelector('.close-button');
-
-    minimizeButton.addEventListener('click', () => {
-      window.style.display = 'none';
-    });
-
-    closeButton.addEventListener('click', () => {
-      window.style.display = 'none';
-    });
-  });  
-})();
-
-// Desktop icons
-(function() {
-  document.querySelectorAll('.desktop-icon').forEach(icon => {
-    icon.addEventListener('click', () => {
-      const targetWindow = document.querySelector(`.window[data-window="${icon.dataset.window}"]`);
+    function openWindow(targetWindow) {
       targetWindow.style.display = 'block';
       targetWindow.style.zIndex = 3;
-    });
-  });
-})();
-
-// Cursor fish
-(function() {
-  const cursorFish = document.querySelector('#cursor-fish');
-  let mouseX = 0;
-  let mouseY = 0;
-  let fishX = 0;
-  let fishY = 0;
-  const speed = 0.05;
-
-  document.addEventListener('mousemove', (e) => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
-  });
-
-  document.addEventListener('mousedown', () => {
-    cursorFish.src = 'https://files.catbox.moe/mkcizo.png';
-    setTimeout(() => {
-      cursorFish.src = 'https://files.catbox.moe/5zc3pj.png';
-    }, 500);
-  });
-
-  function animate() {
-    const distX = mouseX - fishX;
-    const distY = mouseY - fishY;
-    const distance = Math.sqrt(distX * distX + distY * distY);
-  
-    fishX += distX * speed;
-    fishY += distY * speed;
-
-    const angle = Math.atan2(distY, distX);
-    cursorFish.style.transform = `translate(${fishX}px, ${fishY}px) scaleX(${Math.sign(distX)})`;
-  
-    requestAnimationFrame(animate);
-  }
-  
-  animate();
-})();
-
-// Music button
-(function() {
-  const musicButton = document.querySelector('#music-button');
-  const audio = new Audio('https://files.freemusicarchive.org/storage-freemusicarchive-org/music/ccCommunity/Chad_Crouch/Arps/Chad_Crouch_-_Shipping_Lanes.mp3');
-  let isPlaying = false;
-
-  musicButton.addEventListener('click', toggleMusic);
-
-  function toggleMusic() {
-    if (isPlaying) {
-      audio.pause();
-    } else {
-      audio.play();
     }
-    isPlaying = !isPlaying;
-  }
-})();
 
-// Clock
-(function() {
-  const clock = document.querySelector('#clock');
+    function shutdownSystem() {
+      if (confirm("Are you sure you want to close PuffOS and end the session?")) {
+        window.close();
+      }
+    }
+  })();
 
-  function updateTime() {
-    const now = new Date();
-    const hours = now.getHours().toString().padStart(2, '0');
-    const minutes = now.getMinutes().toString().padStart(2, '0');
+  // Taskbar functionality 
+  (function () {
+    const taskbar = document.querySelector('#taskbar');
 
-    clock.textContent = `${hours}:${minutes}`;
-  }
+    taskbar.addEventListener('click', (event) => {
+      if (event.target.dataset.window) {
+        const targetWindow = document.querySelector(`.window[data-window="${event.target.dataset.window}"]`);
 
-  updateTime();
-  setInterval(updateTime, 1000);
-})();
-</script></html>
+        if (targetWindow.style.display === 'none') {
+          targetWindow.style.display = 'block';
+        }
+        targetWindow.style.zIndex = 3;
+      }
+    });
+  })();
+
+  // Window control buttons
+  (function () {
+    document.querySelectorAll('.window').forEach(window => {
+      const minimizeButton = window.querySelector('.minimize-button');
+      const closeButton = window.querySelector('.close-button');
+
+      minimizeButton.addEventListener('click', () => {
+        window.style.display = 'none';
+      });
+
+      closeButton.addEventListener('click', () => {
+        window.style.display = 'none';
+      });
+    });
+  })();
+
+  // Desktop icons
+  (function () {
+    document.querySelectorAll('.desktop-icon').forEach(icon => {
+      icon.addEventListener('click', () => {
+        const targetWindow = document.querySelector(`.window[data-window="${icon.dataset.window}"]`);
+        targetWindow.style.display = 'block';
+        targetWindow.style.zIndex = 3;
+      });
+    });
+  })();
+
+  // Cursor fish
+  (function () {
+    const cursorFish = document.querySelector('#cursor-fish');
+    let mouseX = 0;
+    let mouseY = 0;
+    let fishX = 0;
+    let fishY = 0;
+    const speed = 0.05;
+
+    document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    });
+
+    document.addEventListener('mousedown', () => {
+      cursorFish.src = 'https://files.catbox.moe/mkcizo.png';
+      setTimeout(() => {
+        cursorFish.src = 'https://files.catbox.moe/5zc3pj.png';
+      }, 500);
+    });
+
+    function animate() {
+      const distX = mouseX - fishX;
+      const distY = mouseY - fishY;
+      const distance = Math.sqrt(distX * distX + distY * distY);
+
+      fishX += distX * speed;
+      fishY += distY * speed;
+
+      const angle = Math.atan2(distY, distX);
+      cursorFish.style.transform = `translate(${fishX}px, ${fishY}px) scaleX(${Math.sign(distX)})`;
+
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+  })();
+
+  // Music button
+  (function () {
+    const musicButton = document.querySelector('#music-button');
+    const audio = new Audio('https://files.freemusicarchive.org/storage-freemusicarchive-org/music/ccCommunity/Chad_Crouch/Arps/Chad_Crouch_-_Shipping_Lanes.mp3');
+    let isPlaying = false;
+
+    musicButton.addEventListener('click', toggleMusic);
+
+    function toggleMusic() {
+      if (isPlaying) {
+        audio.pause();
+      } else {
+        audio.play();
+      }
+      isPlaying = !isPlaying;
+    }
+  })();
+
+  // Clock
+  (function () {
+    const clock = document.querySelector('#clock');
+
+    function updateTime() {
+      const now = new Date();
+      const hours = now.getHours().toString().padStart(2, '0');
+      const minutes = now.getMinutes().toString().padStart(2, '0');
+
+      clock.textContent = `${hours}:${minutes}`;
+    }
+
+    updateTime();
+    setInterval(updateTime, 1000);
+  })();
+</script>
+
+</html>
