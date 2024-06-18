@@ -242,14 +242,24 @@ iframe {
   <button data-window="about-puffos">About PuffOS</button>  
   <button data-window="puff-explorer">PuffExplorer</button>
   <button data-window="puff-game">Floaty Puff</button>
-  <button id="puff-twitter">Puffs Twitter</button>  
+  <button id="twitterButton">Puffs Twitter</button>  
   <button id="shutdown-button">Shut Down</button>
 </div>
 
 <img id="cursor-fish" src="https://files.catbox.moe/5zc3pj.png" alt="pufferfish cursor" width="64" height="64">
-<script>document.getElementById('puff-twitter').addEventListener('click', function() {
+
+  
+<script>
+  document.getElementById('puff-twitter').addEventListener('click', function() {
   window.location.href = 'https://twitter.com/lilpuffs_', '_blank';
-});</script>
+});
+</script>
+<script>
+  document.getElementById('twitterButton').addEventListener('click', function() {
+    window.open('https://twitter.com/lilpuffs_', '_blank');
+});
+</script>
+  
 </body>
 <script>
 // Make windows draggable 
