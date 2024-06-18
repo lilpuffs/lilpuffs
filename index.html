@@ -1,5 +1,7 @@
 <html>
 <head>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+  <script src="https://unpkg.com/webamp/dist/webamp.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link rel="stylesheet" href="https://unpkg.com/98.css">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
@@ -12,15 +14,16 @@
       font-family: 'Pixelated MS Sans Serif', Arial;
       -webkit-font-smoothing: none;
       font-size: 11px;
-        -webkit-user-select: none;
-  -moz-user-select: none; 
-  -ms-user-select: none; 
-  user-select: none; 
     }
 
     .title-bar,
     button {
       background: linear-gradient(90deg, #ffcc00 0%, #ffdb4d 100%);
+    }
+
+
+    .title-bar-text {
+      color:black;
     }
 
     .window {
@@ -129,13 +132,13 @@
       border: none;
     }
 
-    #music-button {
+    #musicButton {
       margin-left: auto;
       display: flex;
       align-items: center;
     }
 
-    #music-button img {
+    #musicButton img {
       width: 24px;
       height: 24px;
       margin-right: 5px;
@@ -176,6 +179,11 @@
     <div class="desktop-icon" data-window="charts">
       <img src="https://cdn-icons-png.flaticon.com/512/230/230571.png" alt="charts">
       <span>Bitcoin Charts</span>
+    </div>
+
+    <div class="desktop-icon" data-window="checker">
+      <img src="https://cdn-icons-png.flaticon.com/512/6835/6835898.png" alt="checker">
+      <span>Checker</span>
     </div>
 
     <div class="window" data-window="about-puffos" style="display: none; width: 400px">
@@ -223,6 +231,8 @@
       </div>
     </div>
 
+
+
     <div class="window" data-window="charts" style="display: none; width: 1000px; left: 800px;">
       <div class="title-bar">
         <div class="title-bar-text">PuffExplorer</div>
@@ -254,6 +264,46 @@
       </div>
     </div>
 
+    <div class="window" data-window="checker" style="display: none; width: 200px; height: 100px; left: 600px;">
+      <div class="title-bar">
+        <div class="title-bar-text">PuffExplorer</div>
+        <div class="title-bar-controls">
+          <button aria-label="Minimize" class="minimize-button"></button>
+          <button aria-label="Maximize"></button>
+          <button aria-label="Close" class="close-button"></button>
+        </div>
+      </div>
+      <div class="window-body">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+      </head>
+          <p>Wallet Address Checker</p>
+          <input type="text" id="walletAddress" placeholder="Enter Wallet Address">
+          <button onclick="checkAddress()">Check Address</button>
+          <p id="result"></p>
+      
+          <script>
+              function checkAddress() {
+                  const address = document.getElementById('walletAddress').value;
+                  fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vQUBVdVQZuS7lcLp0-wWll41Zp7j3C7umsBr6S7Gw5CX-Aw46nfhBk45XmaVJl9sLURnu-0kd72VSqL/pub?output=csv')
+                      .then(response => response.text())
+                      .then(data => {
+                          Papa.parse(data, {
+                              complete: function(results) {
+                                  const found = checkForWalletAddress(results.data, address);
+                                  document.getElementById('result').textContent = found ? 'Address found!' : 'Address not found.';
+                              }
+                          });
+                      });
+              }
+      
+              function checkForWalletAddress(data, address) {
+                  return data.some(row => row.includes(address));
+              }
+          </script>
+      </div>
+    </div>
+
+
     <div class="window" data-window="puff-game" style="display: none; width: 400px; height: 610px;">
       <div class="title-bar">
         <div class="title-bar-text">Floaty Puff</div>
@@ -277,8 +327,8 @@
     <button data-window="puff-game">Floaty Puff</button>
     <button class="twitterButton">Puffs Twitter</button>
     <button data-window="charts">Bitcoin Charts</button>
- 
-    <button id="music-button">
+    <button data-window="checker">Checker</button>
+    <button id="musicButton">
       <img src="https://cdn-icons-png.flaticon.com/128/1895/1895657.png" alt="music note icon">
       <span>Music</span>
     </button>
@@ -286,12 +336,18 @@
     <span id="clock"></span>
   </div>
 
+
+
+
+
+
   <div id="startup">
     <button data-window="about-puffos">About PuffOS</button>
     <button data-window="puff-explorer">PuffExplorer</button>
     <button data-window="puff-game">Floaty Puff</button>
     <button class="twitterButton">Puffs Twitter</button>
     <button data-window="charts">Bitcoin Charts</button>
+    <button data-window="checker">Checker</button>
     <button id="shutdown-button">Shut Down</button>
   </div>
 
@@ -448,8 +504,7 @@
   
   loadChartData('day');
   </script>
-  </body></html>
-</body>
+  </body>
 <script>
   // Make windows draggable 
   (function () {
@@ -623,7 +678,7 @@
 
   // Music button
   (function () {
-    const musicButton = document.querySelector('#music-button');
+    const musicButton = document.querySelector('#musicbutton');
     const audio = new Audio('https://files.freemusicarchive.org/storage-freemusicarchive-org/music/ccCommunity/Chad_Crouch/Arps/Chad_Crouch_-_Shipping_Lanes.mp3');
     let isPlaying = false;
 
@@ -638,6 +693,7 @@
       isPlaying = !isPlaying;
     }
   })();
+
 
   // Clock
   (function () {
