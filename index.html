@@ -7,6 +7,13 @@
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <title>PuffOS</title>
   <style>
+
+            .found {
+            color: green;
+        }
+        .not-found {
+            color: red;
+        }
     body {
       background-image: url('https://files.catbox.moe/b7w6rs.gif');
       background-repeat: repeat;
@@ -281,25 +288,32 @@
           <button onclick="checkAddress()">Check Address</button>
           <p id="result"></p>
       
-          <script>
-              function checkAddress() {
-                  const address = document.getElementById('walletAddress').value;
-                  fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vQUBVdVQZuS7lcLp0-wWll41Zp7j3C7umsBr6S7Gw5CX-Aw46nfhBk45XmaVJl9sLURnu-0kd72VSqL/pub?output=csv')
-                      .then(response => response.text())
-                      .then(data => {
-                          Papa.parse(data, {
-                              complete: function(results) {
-                                  const found = checkForWalletAddress(results.data, address);
-                                  document.getElementById('result').textContent = found ? 'Address found!' : 'Address not found.';
-                              }
-                          });
-                      });
-              }
-      
-              function checkForWalletAddress(data, address) {
-                  return data.some(row => row.includes(address));
-              }
-          </script>
+             <script>
+        function checkAddress() {
+            const address = document.getElementById('walletAddress').value;
+            fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vQUBVdVQZuS7lcLp0-wWll41Zp7j3C7umsBr6S7Gw5CX-Aw46nfhBk45XmaVJl9sLURnu-0kd72VSqL/pub?output=csv')
+                .then(response => response.text())
+                .then(data => {
+                    Papa.parse(data, {
+                        complete: function(results) {
+                            const found = checkForWalletAddress(results.data, address);
+                            const resultElement = document.getElementById('result');
+                            if (found) {
+                                resultElement.textContent = 'Address found!';
+                                resultElement.className = 'found';
+                            } else {
+                                resultElement.textContent = 'Address not found.';
+                                resultElement.className = 'not-found';
+                            }
+                        }
+                    });
+                });
+        }
+
+        function checkForWalletAddress(data, address) {
+            return data.some(row => row.includes(address));
+        }
+    </script>
       </div>
     </div>
 
