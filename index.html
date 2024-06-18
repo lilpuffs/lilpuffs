@@ -325,7 +325,9 @@ iframe {
   }
 
   function shutdownSystem() {
-    document.querySelectorAll('.window').forEach(window => window.style.display = 'none');
+    if (confirm("Are you sure you want to close PuffOS and end the session?")) {
+      window.close();
+    }
   }
 })();
 
