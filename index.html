@@ -157,10 +157,12 @@ iframe {
     <img src="https://cdn-icons-png.flaticon.com/512/302/302617.png" alt="game controller icon">
     <span>Floaty Puff</span>  
   </div>
-    <div id="twitterButton" class="desktop-icon" data-window="puff-twitter">
+  <div class="twitterButton">
+    <div class="desktop-icon" data-window="puff-twitter">
     <img href="https://twitter.com/lilpuffs_" target="_blank" src="https://cdn-icons-png.flaticon.com/512/220/220618.png" alt="twitter icon">
     <span>Puffs Twitter</span>  
   </div>
+</div>
   <div class="window" data-window="about-puffos" style="display: none; width: 400px">
     <div class="title-bar">
       <div class="title-bar-text">About PuffOS</div>
@@ -225,7 +227,7 @@ iframe {
 
   <button data-window="about-puffos">About PuffOS</button>
   <button data-window="puff-explorer">PuffExplorer</button>
-  <button id="twitterButton">Puffs Twitter</button>  
+  <button class="twitterButton">Puffs Twitter</button>  
   <button data-window="puff-game">Floaty Puff</button>  
 
   <button id="music-button">
@@ -240,7 +242,7 @@ iframe {
   <button data-window="about-puffos">About PuffOS</button>  
   <button data-window="puff-explorer">PuffExplorer</button>
   <button data-window="puff-game">Floaty Puff</button>
-  <button id="twitterButton">Puffs Twitter</button>  
+  <button class="twitterButton">Puffs Twitter</button>  
   <button id="shutdown-button">Shut Down</button>
 </div>
 
@@ -248,8 +250,12 @@ iframe {
 
   
 <script>
-  document.getElementById('twitterButton').addEventListener('click', function() {
-    window.open('https://twitter.com/lilpuffs_', '_blank');
+const twitterButtons = document.querySelectorAll('.twitterButton');
+
+twitterButtons.forEach(button => {
+    button.addEventListener('click', function() {
+        window.open('https://twitter.com/lilpuffs_', '_blank');
+    });
 });
 </script>
   
