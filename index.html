@@ -162,21 +162,11 @@
 <body>
   <div id="desktop">
 
-    <div class="desktop-icon" data-window="about-puffos">
-      <img src="https://cdn-icons-png.flaticon.com/512/4260/4260932.png" alt="information icon">
-      <span>About PuffOS</span>
-    </div>
-
     <div class="desktop-icon" data-window="puff-game">
       <img src="https://cdn-icons-png.flaticon.com/512/302/302617.png" alt="game controller icon">
       <span>Floaty Puff</span>
     </div>
 
-    <div class="desktop-icon twitterButton" data-window="puff-twitter">
-      <img href="https://twitter.com/lilpuffs_" target="_blank"
-        src="https://cdn-icons-png.flaticon.com/512/220/220618.png" alt="twitter icon">
-      <span>Puffs Twitter</span>
-    </div>
 
     <div class="desktop-icon" data-window="charts">
       <img src="https://cdn-icons-png.flaticon.com/512/230/230571.png" alt="charts">
@@ -187,7 +177,17 @@
       <img src="https://cdn-icons-png.flaticon.com/512/233/233181.png" alt="checker">
       <span>Checker</span>
     </div>
-
+    
+        <div class="desktop-icon" data-window="about-puffos">
+      <img src="https://cdn-icons-png.flaticon.com/512/4260/4260932.png" alt="information icon">
+      <span>About PuffOS</span>
+    </div>
+    
+    <div class="desktop-icon twitterButton" data-window="puff-twitter">
+      <img href="https://twitter.com/lilpuffs_" target="_blank"
+        src="https://cdn-icons-png.flaticon.com/512/220/220618.png" alt="twitter icon">
+      <span>Puff Twitter</span>
+    </div>
     <div class="window" data-window="about-puffos" style="display: none; width: 400px; left: 50px; bottom: 165px;">
       <div class="title-bar">
         <div class="title-bar-text">About PuffOS</div>
@@ -331,11 +331,12 @@
   <div id="taskbar">
     <button id="start-button">Start</button>
 
-    <button data-window="about-puffos">About PuffOS</button>
+
     <button data-window="puff-game">Floaty Puff</button>
-    <button class="twitterButton">Puffs Twitter</button>
     <button data-window="charts">Bitcoin Charts</button>
     <button data-window="checker">Checker</button>
+        <button data-window="about-puffos">About PuffOS</button>
+            <button class="twitterButton">Puff Twitter</button>
     <button id="musicButton">
       <img src="https://cdn-icons-png.flaticon.com/128/1895/1895657.png" alt="music note icon">
       <span>Music</span>
@@ -350,11 +351,13 @@
 
 
   <div id="startup">
-    <button data-window="about-puffos">About PuffOS</button>
+
     <button data-window="puff-game">Floaty Puff</button>
-    <button class="twitterButton">Puffs Twitter</button>
+
     <button data-window="charts">Bitcoin Charts</button>
     <button data-window="checker">Checker</button>
+        <button data-window="about-puffos">About PuffOS</button>
+            <button class="twitterButton">Puffs Twitter</button>
     <button id="shutdown-button">Shut Down</button>
   </div>
 
