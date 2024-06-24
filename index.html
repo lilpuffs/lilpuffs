@@ -703,7 +703,8 @@
 (function () {
   const musicButton = document.querySelector('#musicbutton');
   const audio = new Audio('https://files.freemusicarchive.org/storage-freemusicarchive-org/music/ccCommunity/Chad_Crouch/Arps/Chad_Crouch_-_Shipping_Lanes.mp3');
-  audio.volume = 0.2; // Set volume to half
+  audio.volume = 0.2; 
+  audio.loop = true; 
   let isPlaying = false;
 
   musicButton.addEventListener('click', toggleMusic);
@@ -717,8 +718,6 @@
     isPlaying = !isPlaying;
   }
 })();
-
-
 
   // Clock
   (function () {
