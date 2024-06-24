@@ -8,6 +8,25 @@
   <title>PuffOS</title>
   <style>
 
+    html {
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+                                  }
+  
+  
+
+            .found {
+            color: green;
+        }
+        .not-found {
+            color: red;
+        }
+
             .found {
             color: green;
         }
@@ -16,7 +35,7 @@
         }
     body {
       background-image: url('https://files.catbox.moe/yfxozi.png');
-  background-size: cover; /* Add this line */
+  background-size: cover;
       overflow: hidden;
       font-family: 'Pixelated MS Sans Serif', Arial;
       -webkit-font-smoothing: none;
