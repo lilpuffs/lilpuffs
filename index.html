@@ -7,8 +7,8 @@
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <title>PuffOS</title>
   <style>
-
-    html {
+  
+  html {
     -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */
      -khtml-user-select: none; /* Konqueror HTML */
@@ -26,16 +26,9 @@
         .not-found {
             color: red;
         }
-
-            .found {
-            color: green;
-        }
-        .not-found {
-            color: red;
-        }
     body {
       background-image: url('https://files.catbox.moe/yfxozi.png');
-  background-size: cover;
+  background-size: cover; /* Add this line */
       overflow: hidden;
       font-family: 'Pixelated MS Sans Serif', Arial;
       -webkit-font-smoothing: none;
@@ -208,7 +201,7 @@
         src="https://cdn-icons-png.flaticon.com/512/220/220618.png" alt="twitter icon">
       <span>Puff Twitter</span>
     </div>
-    <div class="window" data-window="about-puffos" style="display: none; width: 400px; left: 50px; bottom: 165px;">
+    <div class="window" data-window="about-puffos" style="display: none; width: 400px; left: 100px; top: 780px;">
       <div class="title-bar">
         <div class="title-bar-text">About PuffOS</div>
         <div class="title-bar-controls">
@@ -724,6 +717,7 @@
     isPlaying = !isPlaying;
   }
 })();
+
 
 
   // Clock
